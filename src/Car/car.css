@@ -1,0 +1,30 @@
+.car {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
+  border: 2px solid blue;
+  margin-bottom: 10px;
+  width: 200px;
+  height: 200px;
+
+  transition: border, box-shadow .3s;
+}
+
+.input {
+  border: 1px solid black;
+  outline: none;
+}
+
+.input.success {
+  border: 1px solid green;
+}
+
+.input.warning {
+  border: 1px solid red;
+}
+
+.input.bold {
+  border: 2px solid green;
+  font-weight: bold;
+}
