@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Car from './Car/Car'
 import './App.css';
+import ErorrBoundary from './errorboundary/errorboundary';
+import Counter from './Counter/counter';
 
 export default class App extends Component {
 
@@ -14,8 +16,15 @@ export default class App extends Component {
       ],
       pageTitle: 'React Components',
       showCars: false
-    } // не нужно делать обращение в бэку
-    // Вызывается всегда первый
+    } 
+    // Вызывается один раз
+    /* Можно:
+      - Устанавливайте изначальное состояние компонента
+      - Если не используется class properties синтаксис – подготовьте все поля класса и вызовете bind на тех функциях, что будут переданы как коллбеки.
+    */
+    /* Нельзя:
+      Не выполняйте никаких сайд-эффектов (side effects) (Вызовы AJAX и т.д.)
+    */
   }
 
   onChangeName(name, index) {
@@ -51,8 +60,17 @@ export default class App extends Component {
   }
 
   componentWillMount() {
-    console.log('App componentWillMount') // 1. Вызывается в тот момент, когда произошла инициализация компонента, он принял пропсы и он готов к render
+    console.log('App componentWillMount')
+    // 1. Вызывается в тот момент, когда произошла инициализация компонента, он принял пропсы и он готов к render
     // Не стоит обращаться к бэку
+    /* Можно 
+      Обновляйте состояние через this.setState
+      Выполняйте последние оптимизации
+      Вызывайте сайд-эффекты (Вызов AJAX и т.д.) только в случае server-side-rendering.
+    */
+    /* Нельзя 
+      Не выполняйте никаких сайд-эффектов (Вызов AJAX и т.д.) на стороне клиента.
+    */
   }
 
   componentDidMount() {
@@ -69,7 +87,9 @@ export default class App extends Component {
 
     const renderCars = cars.map((car, idx) => {
       return (
-        <Car key={idx} name={car.name} year={car.year} onDeleteCar={() => this.deleteCars(idx)} onChangeName={(evt) => this.onChangeName(evt.target.value, idx)}/>
+        <ErorrBoundary key={idx}>
+          <Car name={car.name} year={car.year} onDeleteCar={() => this.deleteCars(idx)} onChangeName={(evt) => this.onChangeName(evt.target.value, idx)}/>
+        </ErorrBoundary>
       )
     })
 
@@ -79,6 +99,7 @@ export default class App extends Component {
         <input type="text" onChange={this.handleInput}/>
         <button onClick={this.toggleCars}>toggle cars</button>
         {showCars ? renderCars : null}
+        <Counter></Counter>
       </div>
     )
   }
