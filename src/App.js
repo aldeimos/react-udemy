@@ -4,6 +4,8 @@ import './App.css';
 import ErorrBoundary from './errorboundary/errorboundary';
 import Counter from './Counter/counter';
 
+export const ClickedContext = React.createContext(false);
+
 export default class App extends Component {
 
   constructor() {
@@ -15,7 +17,8 @@ export default class App extends Component {
         {name: 'Volvo', year: 2018}, */
       ],
       pageTitle: 'React Components',
-      showCars: false
+      showCars: false,
+      clicked: false
     } 
     // Вызывается один раз
     /* Можно:
@@ -98,8 +101,11 @@ export default class App extends Component {
         <h1>{this.state.pageTitle}</h1>
         <input type="text" onChange={this.handleInput}/>
         <button onClick={this.toggleCars}>toggle cars</button>
+        <button onClick={() => this.setState({clicked: true})}>Changed Click</button>
         {showCars ? renderCars : null}
-        <Counter></Counter>
+        <ClickedContext.Provider value={this.state.clicked}>
+          <Counter></Counter>
+        </ClickedContext.Provider>
       </div>
     )
   }
